@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements Dialog.DialogListener{
 
+    public static final String TAG = "MainActivity";
+
+    // Declaration
+    RecyclerView myView;
+    Database myDatabase;
+    ArrayList<Info> myList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Recycler View Initialization
+        myView = (RecyclerView) findViewById(R.id.recycler_view);
 
 
     }
@@ -42,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            createDialog();
             return true;
         }
 
@@ -84,12 +97,17 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
     }
 
     @Override
-    public void PositiveClick() {
-        
+    public void PositiveClick(Bundle args) {
+        String s1 = args.getString("Subject_Code");
+        String s2 = args.getString("Subject_Name");
+        String s3 = args.getString("Teacher");
+
+        Log.d(TAG,s1+" "+s2+" "+s3);
+
     }
 
     @Override
     public void NegativeClick() {
-
+        Log.d(TAG,"Negative Callback");
     }
 }
