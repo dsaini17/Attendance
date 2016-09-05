@@ -1,5 +1,7 @@
 package com.example.devesh.attendance;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +15,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.example.devesh.attendance.Models.DatabaseTable;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements Dialog.DialogListener{
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
 
     // Declaration
     RecyclerView myView;
-    Database myDatabase;
+    SQLiteDatabase myDatabase;
     ArrayList<Info> myList;
 
 
@@ -35,6 +39,14 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         // Recycler View Initialization
         myView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        // List Initialization
+        myList = new ArrayList<>();
+
+
+
+    }
+
+    public void performUpdation(){
 
     }
 
@@ -103,6 +115,20 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         String s3 = args.getString("Teacher");
 
         Log.d(TAG,s1+" "+s2+" "+s3);
+
+        myDatabase = Database.getWritable(MainActivity.this);
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseTable.Columns.SUBJECT_CODE,s1);
+        values.put(DatabaseTable.Columns.SUBJECT,s2);
+        values.put(DatabaseTable.Columns.TEACHER,s3);
+        values.put(DatabaseTable.Columns.ATTENDED,0);
+        values.put(DatabaseTable.Columns.TOTAL,0);
+        values.put(DatabaseTable.Columns.PAST,"");
+
+        myDatabase.insert(DatabaseTable.TABLE_NAME,null,values);
+
+        performUpdation();
 
     }
 

@@ -15,14 +15,14 @@ public class Database extends SQLiteOpenHelper {
     public static final int DB_Version = 1;
     private static Database myDatabase = null;
 
-    public SQLiteDatabase getReadable(Context ctx){
+    public static SQLiteDatabase getReadable(Context ctx){
         if(myDatabase==null){
            myDatabase = new Database(ctx);
         }
         return myDatabase.getReadableDatabase();
     }
 
-    public SQLiteDatabase getWritable(Context ctx){
+    public static SQLiteDatabase getWritable(Context ctx){
         if(myDatabase==null){
             myDatabase = new Database(ctx);
         }
