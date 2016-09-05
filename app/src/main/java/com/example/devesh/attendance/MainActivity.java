@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -43,6 +44,13 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         myList = new ArrayList<>();
 
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        myView.setLayoutManager(linearLayoutManager);
+
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this);
+        myView.setAdapter(recyclerViewAdapter);
+
+
 
     }
 
@@ -73,35 +81,8 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         return super.onOptionsItemSelected(item);
     }
 
-    public class ListAdapter extends BaseAdapter{
 
-        private ArrayList<Info> mList;
 
-        public ListAdapter(ArrayList<Info> mList) {
-            this.mList = mList;
-        }
-
-        @Override
-        public int getCount() {
-            return mList.size();
-        }
-
-        @Override
-        public Info getItem(int i) {
-            return mList.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-
-            return view;
-        }
-    }
 
     public void createDialog(){
         Dialog dialog = new Dialog();

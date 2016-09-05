@@ -41,6 +41,7 @@ import java.util.HashSet;
         @Override
         public void onBindViewHolder(ReyclerViewHolder holder, int position) {
             holder.updateItem(position);
+
         }
 
         @Override
