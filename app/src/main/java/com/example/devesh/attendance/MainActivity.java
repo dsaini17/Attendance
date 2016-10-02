@@ -1,6 +1,7 @@
 package com.example.devesh.attendance;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
     RecyclerView myView;
     SQLiteDatabase myDatabase;
     ArrayList<Info> myList;
-
+    RecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +48,47 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         myView.setLayoutManager(linearLayoutManager);
 
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this);
+        recyclerViewAdapter = new RecyclerViewAdapter(this,myList);
         myView.setAdapter(recyclerViewAdapter);
+
+        performUpdation();
 
 
 
     }
 
     public void performUpdation(){
+
+        myList.clear();
+
+        String proj[] = {
+                DatabaseTable.Columns.SUBJECT_CODE,
+                DatabaseTable.Columns.SUBJECT,
+                DatabaseTable.Columns.TEACHER,
+                DatabaseTable.Columns.ATTENDED,
+                DatabaseTable.Columns.TOTAL,
+                DatabaseTable.Columns.PAST
+        };
+
+        myDatabase = Database.getReadable(MainActivity.this);
+
+        Cursor c = myDatabase.query(DatabaseTable.TABLE_NAME,proj,null,null,null,null,null);
+        Log.d(TAG,"Count :- "+c.getCount());
+
+        while (c.moveToNext()){
+
+            String subj = c.getString(c.getColumnIndexOrThrow(DatabaseTable.Columns.SUBJECT));
+            String subj_code = c.getString(c.getColumnIndexOrThrow(DatabaseTable.Columns.SUBJECT_CODE));
+            String teacher = c.getString(c.getColumnIndexOrThrow(DatabaseTable.Columns.TEACHER));
+            String pastrecord = c.getString(c.getColumnIndexOrThrow(DatabaseTable.Columns.PAST));
+            int attended = c.getInt(c.getColumnIndexOrThrow(DatabaseTable.Columns.ATTENDED));
+            int total = c.getInt(c.getColumnIndexOrThrow(DatabaseTable.Columns.TOTAL));
+
+            myList.add(new Info(subj_code,subj,teacher,pastrecord,attended,total));
+        }
+
+        recyclerViewAdapter.notifyDataSetChanged();
+
 
     }
 

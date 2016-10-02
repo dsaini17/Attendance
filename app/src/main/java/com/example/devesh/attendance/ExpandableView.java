@@ -67,16 +67,16 @@ public class ExpandableView extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int childCount = getChildCount();
-        if (childCount != 2) {
-            throw new IllegalStateException("ExpandableView must has two child view !");
-        }
+//        if (childCount != 2) {
+//            throw new IllegalStateException("ExpandableView must has two child view !");
+//        }
         if (sIsInit) {
             ((MarginLayoutParams) getChildAt(0).getLayoutParams()).bottomMargin = 0;
-            MarginLayoutParams marginLayoutParams = ((MarginLayoutParams) getChildAt(1).getLayoutParams());
+            MarginLayoutParams marginLayoutParams = ((MarginLayoutParams) getChildAt(0).getLayoutParams());
             marginLayoutParams.bottomMargin = 0;
             marginLayoutParams.topMargin = 0;
             marginLayoutParams.height = 0;
-            mExpandedViewHeight = getChildAt(1).getMeasuredHeight();
+            mExpandedViewHeight = getChildAt(0).getMeasuredHeight();
             sIsInit = false;
             mExpandState = CLOSED;
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -157,7 +157,7 @@ public class ExpandableView extends LinearLayout {
         if (mExpandState == PREINIT) {
             return;
         }
-        getChildAt(1).getLayoutParams().height = expand ? mExpandedViewHeight : 0;
+        getChildAt(0).getLayoutParams().height = expand ? mExpandedViewHeight : 0;
         requestLayout();
         mExpandState = expand ? EXPANDED : CLOSED;
     }

@@ -2,6 +2,7 @@ package com.example.devesh.attendance;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import java.util.HashSet;
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ReyclerViewHolder> {
 
         ArrayList<Info> mList;
-
+        public static final String TAG = "Adapter";
 
     private LayoutInflater layoutInflater;
         private HashSet<Integer> expandedPositionSet;
@@ -31,10 +32,41 @@ import java.util.HashSet;
             mList = List;
         }
 
-        @Override
+
+    class ReyclerViewHolder extends RecyclerView.ViewHolder {
+        private ExpandableView ExpandableView;
+        private TextView showInfo;
+        private TextView code,teacher,past,percent,name;
+
+
+        private ReyclerViewHolder(final View view) {
+            super(view);
+            ExpandableView = (ExpandableView) view.findViewById(R.id.expandable_layout);
+            showInfo = (TextView) view.findViewById(R.id.show_info);
+            code = (TextView) view.findViewById(R.id.sub_code);
+            teacher = (TextView) view.findViewById(R.id.sub_teacher);
+            past = (TextView) view.findViewById(R.id.sub_att);
+            name = (TextView) view.findViewById(R.id.sub_name);
+            percent = (TextView) view.findViewById(R.id.sub_per);
+        }
+
+        private void updateItem(final int position) {
+            ExpandableView.setOnExpandListener(new ExpandableView.OnExpandListener() {
+                @Override
+                public void onExpand(boolean expanded) {
+                    registerExpand(position, showInfo);
+                }
+            });
+            ExpandableView.setExpand(expandedPositionSet.contains(position));
+
+        }
+    }
+
+
+    @Override
         public ReyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View item = layoutInflater.inflate(R.layout.list_item , parent, false);
-
+        Log.d(TAG,"OnCReate");
             return new ReyclerViewHolder(item);
         }
 
@@ -42,6 +74,24 @@ import java.util.HashSet;
         public void onBindViewHolder(ReyclerViewHolder holder, int position) {
             holder.updateItem(position);
 
+            Log.d(TAG,"OnBind Countof list : - " + mList.size());
+
+            Info info = mList.get(position);
+
+            holder.name.setText(info.getSubject());
+            holder.code.setText(info.getSubject_Code());
+            holder.teacher.setText(info.getTeacher());
+            holder.past.setText(info.getPast());
+
+
+            float fm ;
+
+            if(info.getTotal()==0)
+                fm=0;
+            else
+                fm= (info.getAttended()/info.getTotal())*100;
+
+            holder.percent.setText(String.valueOf(fm));
         }
 
         @Override
@@ -54,34 +104,6 @@ import java.util.HashSet;
             return mList.size() ;
         }
 
-        class ReyclerViewHolder extends RecyclerView.ViewHolder {
-            private ExpandableView ExpandableView;
-            private TextView showInfo;
-            private TextView code,teacher,past,percent,name;
-
-
-            private ReyclerViewHolder(final View view) {
-                super(view);
-                ExpandableView = (ExpandableView) view.findViewById(R.id.expandable_layout);
-                showInfo = (TextView) view.findViewById(R.id.show_info);
-                code = (TextView) view.findViewById(R.id.sub_code);
-                teacher = (TextView) view.findViewById(R.id.sub_teacher);
-                past = (TextView) view.findViewById(R.id.sub_att);
-                name = (TextView) view.findViewById(R.id.sub_name);
-                percent = (TextView) view.findViewById(R.id.sub_per);
-            }
-
-            private void updateItem(final int position) {
-                ExpandableView.setOnExpandListener(new ExpandableView.OnExpandListener() {
-                    @Override
-                    public void onExpand(boolean expanded) {
-                        registerExpand(position, showInfo);
-                    }
-                });
-                ExpandableView.setExpand(expandedPositionSet.contains(position));
-
-            }
-        }
 
         private void registerExpand(int position, TextView textView) {
             if (expandedPositionSet.contains(position)) {
