@@ -65,8 +65,8 @@ import java.util.HashSet;
 
     @Override
         public ReyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View item = layoutInflater.inflate(R.layout.list_item , parent, false);
-        Log.d(TAG,"OnCReate");
+        View item = layoutInflater.inflate(viewType == 0 ? R.layout.list_item : R.layout.list_item_2, parent, false);
+            Log.d(TAG,"OnCReate");
             return new ReyclerViewHolder(item);
         }
 
@@ -74,9 +74,11 @@ import java.util.HashSet;
         public void onBindViewHolder(ReyclerViewHolder holder, int position) {
             holder.updateItem(position);
 
-            Log.d(TAG,"OnBind Countof list : - " + mList.size());
+            Log.d(TAG,"OnBind Position : - " + position);
 
             Info info = mList.get(position);
+
+            Log.d(TAG,"Values are "+info.getSubject()+" "+info.getSubject_Code()+" "+info.getTeacher());
 
             holder.name.setText(info.getSubject());
             holder.code.setText(info.getSubject_Code());
@@ -96,11 +98,13 @@ import java.util.HashSet;
 
         @Override
         public int getItemViewType(int position) {
-            return 0;
+            return position%2;
         }
 
         @Override
         public int getItemCount() {
+
+            Log.d(TAG,"mList_Size : - "+mList.size());
             return mList.size() ;
         }
 

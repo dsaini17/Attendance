@@ -45,11 +45,13 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         myList = new ArrayList<>();
 
 
+        // Layout Manager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         myView.setLayoutManager(linearLayoutManager);
 
         recyclerViewAdapter = new RecyclerViewAdapter(this,myList);
         myView.setAdapter(recyclerViewAdapter);
+        recyclerViewAdapter.notifyDataSetChanged();
 
         performUpdation();
 
