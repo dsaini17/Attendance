@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +31,10 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
     public static final String TAG = "MainActivity";
 
     // Declaration
-    RecyclerView myView;
+    ListView myView;
     SQLiteDatabase myDatabase;
     ArrayList<Info> myList;
-
+    ListViewAdapter listViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         setSupportActionBar(toolbar);
 
         // List View Initialization
-
+        myView = (ListView) findViewById(R.id.list_view);
 
         // List Initialization
         myList = new ArrayList<>();
@@ -51,7 +52,9 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
 
         // Layout Manager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        myView.setLayoutManager(linearLayoutManager);
+        listViewAdapter = new ListViewAdapter(myList);
+
+        myView.setAdapter(listViewAdapter);
 
 
         performUpdation();
@@ -70,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
                 DatabaseTable.Columns.TEACHER,
                 DatabaseTable.Columns.ATTENDED,
                 DatabaseTable.Columns.TOTAL,
-                DatabaseTable.Columns.PAST
+                DatabaseTable.Columns.PAST,
+                DatabaseTable.Columns.ID
         };
 
         myDatabase = Database.getReadable(MainActivity.this);
@@ -89,9 +93,11 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             int id = c.getInt(c.getColumnIndexOrThrow(DatabaseTable.Columns.ID));
 
             myList.add(new Info(subj_code,subj,teacher,pastrecord,attended,total,id));
+
+            Log.d(TAG,"attended "+attended+" total "+total);
         }
 
-
+        listViewAdapter.notifyDataSetChanged();
 
     }
 
@@ -144,7 +150,9 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         values.put(DatabaseTable.Columns.TOTAL,0);
         values.put(DatabaseTable.Columns.PAST,"");
 
-        myDatabase.insert(DatabaseTable.TABLE_NAME,null,values);
+        long rm = myDatabase.insert(DatabaseTable.TABLE_NAME,null,values);
+
+        Log.d(TAG,"VAlues added at :- "+rm);
 
         performUpdation();
 
@@ -189,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             Button add,remove,sub;
 
             details = (TextView) view.findViewById(R.id.show_info);
-            subj = (TextView) view.findViewById(R.id.subj_name);
+            subj = (TextView) view.findViewById(R.id.subject_name);
             percent = (TextView) view.findViewById(R.id.sub_per);
 
             add = (Button) view.findViewById(R.id.add);
@@ -197,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             remove = (Button) view.findViewById(R.id.remove);
 
             final Info info = getItem(i);
-
+            Log.d(TAG, info.getSubject()+" "+info.getTeacher());
             subj.setText(info.getSubject());
 
             float fm;
@@ -205,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             if(info.getTotal()==0)
                 fm=0;
             else
-                fm = (info.getAttended()/info.getTotal())*100;
+                fm = ((float)info.getAttended()*100)/(float)info.getTotal();
 
             percent.setText(String.format("%.2f",fm));
 
@@ -245,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
                     int UniqueID = info.getId();
                     myDatabase = Database.getWritable(getApplicationContext());
                     if(info.getTotal()==0)
-                        Toast.makeText(getApplicationContext(),"Invalid Selection",Toast.LENGTH_SHORT);
+                        Toast.makeText(getApplicationContext(),"Invalid Selection",Toast.LENGTH_SHORT).show();
                     else{
                         ContentValues contentValues = new ContentValues();
                         String s=info.getPast();
@@ -269,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    
+
                 }
             });
 
