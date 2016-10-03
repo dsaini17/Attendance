@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
     RecyclerView myView;
     SQLiteDatabase myDatabase;
     ArrayList<Info> myList;
-    RecyclerViewAdapter recyclerViewAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Recycler View Initialization
-        myView = (RecyclerView) findViewById(R.id.recycler_view);
+        // List View Initialization
+
 
         // List Initialization
         myList = new ArrayList<>();
@@ -49,9 +50,6 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         myView.setLayoutManager(linearLayoutManager);
 
-        recyclerViewAdapter = new RecyclerViewAdapter(this,myList);
-        myView.setAdapter(recyclerViewAdapter);
-        recyclerViewAdapter.notifyDataSetChanged();
 
         performUpdation();
 
@@ -89,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             myList.add(new Info(subj_code,subj,teacher,pastrecord,attended,total));
         }
 
-        recyclerViewAdapter.notifyDataSetChanged();
 
 
     }
@@ -152,5 +149,41 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
     @Override
     public void NegativeClick() {
         Log.d(TAG,"Negative Callback");
+    }
+
+    public class ListViewAdapter extends BaseAdapter{
+
+        private ArrayList<Info> mList;
+
+        public ListViewAdapter(ArrayList<Info> mList) {
+            this.mList = mList;
+        }
+
+        @Override
+        public int getCount() {
+            return mList.size();
+        }
+
+        @Override
+        public Info getItem(int i) {
+            return mList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+
+            LayoutInflater layoutInflater = getLayoutInflater();
+
+            view = layoutInflater.inflate(R.layout.list_item,null,false);
+
+
+
+            return view;
+        }
     }
 }
