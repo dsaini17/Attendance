@@ -9,6 +9,7 @@ public class DatabaseTable extends Table {
 
     public static final String TABLE_CREATE_CMD ="CREATE TABLE IF NOT EXISTS "+TABLE_NAME
             +LBR
+            +Columns.ID+ TYPE_INT_PK + COMMA
             +Columns.SUBJECT_CODE+ TYPE_TEXT + COMMA
             +Columns.SUBJECT + TYPE_TEXT + COMMA
             +Columns.TEACHER + TYPE_TEXT + COMMA
@@ -18,6 +19,7 @@ public class DatabaseTable extends Table {
             +RBR+";";
 
     public interface Columns{
+        String ID = "id";
         String SUBJECT_CODE = "code";
         String SUBJECT = "sub";
         String TEACHER = "teacher";

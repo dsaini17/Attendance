@@ -11,14 +11,24 @@ public class Info {
     String Past;
     int Attended;
     int Total;
+    int id;
 
-    public Info(String subject_Code, String subject, String teacher, String past, int attended, int total) {
+    public Info(String subject_Code, String subject, String teacher, String past, int attended, int total, int id) {
         Subject_Code = subject_Code;
         Subject = subject;
         Teacher = teacher;
         Past = past;
         Attended = attended;
         Total = total;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSubject_Code() {

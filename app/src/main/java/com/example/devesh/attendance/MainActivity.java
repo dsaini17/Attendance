@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.devesh.attendance.Models.DatabaseTable;
 
@@ -83,8 +85,9 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             String pastrecord = c.getString(c.getColumnIndexOrThrow(DatabaseTable.Columns.PAST));
             int attended = c.getInt(c.getColumnIndexOrThrow(DatabaseTable.Columns.ATTENDED));
             int total = c.getInt(c.getColumnIndexOrThrow(DatabaseTable.Columns.TOTAL));
+            int id = c.getInt(c.getColumnIndexOrThrow(DatabaseTable.Columns.ID));
 
-            myList.add(new Info(subj_code,subj,teacher,pastrecord,attended,total));
+            myList.add(new Info(subj_code,subj,teacher,pastrecord,attended,total,id));
         }
 
 
@@ -181,7 +184,45 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
 
             view = layoutInflater.inflate(R.layout.list_item,null,false);
 
+            TextView subj,sub_code,teacher,past,percent,details;
+            Button add,remove,sub;
 
+            details = (TextView) view.findViewById(R.id.show_info);
+            subj = (TextView) view.findViewById(R.id.subj_name);
+            percent = (TextView) view.findViewById(R.id.sub_per);
+
+            add = (Button) view.findViewById(R.id.add);
+            sub = (Button) view.findViewById(R.id.sub);
+            remove = (Button) view.findViewById(R.id.remove);
+
+            final Info info = getItem(i);
+
+            subj.setText(info.getSubject());
+
+            float fm;
+
+            if(info.getTotal()==0)
+                fm=0;
+            else
+                fm = (info.getAttended()/info.getTotal())*100;
+
+            percent.setText(String.format("%.2f",fm));
+
+
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int UniqueID = info.getId();
+                    myDatabase = Database.getWritable(getApplicationContext());
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DatabaseTable.Columns.ATTENDED,info.getAttended()+1);
+                    contentValues.put(DatabaseTable.Columns.TOTAL,info.getTotal()+1);
+                    String s=info.getPast()+"1";
+                    contentValues.put(DatabaseTable.Columns.PAST,s);
+                    myDatabase.update(DatabaseTable.TABLE_NAME,contentValues,DatabaseTable.Columns.ID+"="+UniqueID,null);
+                    performUpdation();
+                }
+            });
 
             return view;
         }

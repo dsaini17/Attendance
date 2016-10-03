@@ -55,11 +55,12 @@
             android:textColor="@drawable/button_style2_text"
             android:textAlignment="center"
             android:text="Attended"
+            android:id="@+id/add"
             />
 
 
         <Button
-
+android:id="@+id/sub"
             android:layout_marginLeft="5sp"
             android:layout_marginRight="5sp"
             android:background="@drawable/button_style1"
@@ -72,7 +73,7 @@
 
 
         <Button
-
+android:id="@+id/remove"
             android:background="@drawable/button_style3"
             android:textColor="@drawable/button_style3_text"
             android:layout_marginLeft="5sp"
