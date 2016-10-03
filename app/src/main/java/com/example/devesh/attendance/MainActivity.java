@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.devesh.attendance.Models.DatabaseTable;
 
@@ -221,6 +222,54 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
                     contentValues.put(DatabaseTable.Columns.PAST,s);
                     myDatabase.update(DatabaseTable.TABLE_NAME,contentValues,DatabaseTable.Columns.ID+"="+UniqueID,null);
                     performUpdation();
+                }
+            });
+
+            sub.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int UniqueID = info.getId();
+                    myDatabase = Database.getWritable(getApplicationContext());
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DatabaseTable.Columns.TOTAL,info.getTotal()+1);
+                    String s=info.getPast()+"0";
+                    contentValues.put(DatabaseTable.Columns.PAST,s);
+                    myDatabase.update(DatabaseTable.TABLE_NAME,contentValues,DatabaseTable.Columns.ID+"="+UniqueID,null);
+                    performUpdation();
+                }
+            });
+
+            remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int UniqueID = info.getId();
+                    myDatabase = Database.getWritable(getApplicationContext());
+                    if(info.getTotal()==0)
+                        Toast.makeText(getApplicationContext(),"Invalid Selection",Toast.LENGTH_SHORT);
+                    else{
+                        ContentValues contentValues = new ContentValues();
+                        String s=info.getPast();
+                        if(s.endsWith("1")){
+                            contentValues.put(DatabaseTable.Columns.ATTENDED,info.getAttended()-1);
+                            contentValues.put(DatabaseTable.Columns.TOTAL,info.getTotal()-1);
+                            s=s.substring(0,s.length()-1);
+                            contentValues.put(DatabaseTable.Columns.PAST,s);
+                        }
+                        else{
+                            contentValues.put(DatabaseTable.Columns.TOTAL,info.getTotal()-1);
+                            s=s.substring(0,s.length()-1);
+                            contentValues.put(DatabaseTable.Columns.PAST,s);
+                        }
+                        myDatabase.update(DatabaseTable.TABLE_NAME,contentValues,DatabaseTable.Columns.ID+"="+UniqueID,null);
+                        performUpdation();
+                    }
+                }
+            });
+
+            details.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    
                 }
             });
 

@@ -12,6 +12,6 @@ public class Table {
     static String TYPE_INT =" INTEGER ";
     static String TYPE_TEXT = " TEXT ";
     static String TYPE_REAL = " REAL ";
-    static String TYPE_INT_PK = " INTEGER PRIMARY KEY ";
+    static String TYPE_INT_PK = " INTEGER PRIMARY KEY AUTOINCREMENT ";
 
 }
