@@ -1,7 +1,5 @@
 # Attendance
 
-Its an Attendance Tracker which helps students to remain uo-to-date with their attendance
-
-It makes use of a Collapsable Recycler View
+Its an Attendance Tracker which helps students to remain up-to-date with their attendance
 
 An interesting User Interface 
