@@ -86,7 +86,7 @@ android:id="@+id/remove"
 
     </LinearLayout>
 
-    <TextView
+    <Button
         android:layout_marginLeft="15sp"
         android:padding="5sp"
         android:layout_width="match_parent"

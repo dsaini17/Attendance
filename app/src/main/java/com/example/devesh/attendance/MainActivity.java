@@ -132,6 +132,12 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         dialog.show(getSupportFragmentManager(),"XYZ");
     }
 
+    public void showDialog(Bundle args){
+        Dialog_Show dialog_show = new Dialog_Show();
+        dialog_show.setArguments(args);
+        dialog_show.show(getSupportFragmentManager(),"ABC");
+    }
+
     @Override
     public void PositiveClick(Bundle args) {
         String s1 = args.getString("Subject_Code");
@@ -187,16 +193,16 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
 
             LayoutInflater layoutInflater = getLayoutInflater();
 
             view = layoutInflater.inflate(R.layout.list_item,null,false);
 
-            TextView subj,sub_code,teacher,past,percent,details;
-            Button add,remove,sub;
+            TextView subj,sub_code,teacher,past,percent;
+            Button add,remove,sub,details;
 
-            details = (TextView) view.findViewById(R.id.show_info);
+            details = (Button) view.findViewById(R.id.show_info);
             subj = (TextView) view.findViewById(R.id.subject_name);
             percent = (TextView) view.findViewById(R.id.sub_per);
 
@@ -277,7 +283,13 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Log.d(TAG,"onclick at");
+                    Bundle args = new Bundle();
+                    args.putString("code",info.getSubject_Code());
+                    args.putString("teacher",info.getTeacher());
+                    args.putString("past",info.getPast());
+                    showDialog(args);
+                    performUpdation();
                 }
             });
 
