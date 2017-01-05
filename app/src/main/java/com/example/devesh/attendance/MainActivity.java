@@ -116,8 +116,12 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add) {
             createDialog();
+            return true;
+        }
+        else if(id == R.id.action_delete){
+            deleteDialog();
             return true;
         }
 
@@ -125,6 +129,39 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
     }
 
 
+    public void deleteDialog(){
+        Bundle args = new Bundle();
+
+        myDatabase = Database.getReadable(MainActivity.this);
+
+        ArrayList<String> subject = new ArrayList<>();
+
+
+        String proj[]={
+                DatabaseTable.Columns.SUBJECT
+        };
+
+        Cursor c = myDatabase.query(DatabaseTable.TABLE_NAME,proj,null,null,null,null,null);
+        while ((c.moveToNext())){
+            String s1 = c.getString(c.getColumnIndexOrThrow(DatabaseTable.Columns.SUBJECT));
+            subject.add(s1);
+        }
+        Log.d("Delete Dialog","Size - "+subject.size());
+
+        CharSequence[] items = subject.toArray(new CharSequence[subject.size()]);
+
+        args.putCharSequenceArray("Subject_Delete",items);
+
+      //  args.putStringArrayList("Suubject_Delete",subject);
+
+        Delete_Dialog deleteDialog = new Delete_Dialog();
+        deleteDialog.setArguments(args);
+        deleteDialog.show(getSupportFragmentManager(),"MNOP");
+    }
+
+    public void Positive_Click(Bundle args){
+        
+    }
 
 
     public void createDialog(){
