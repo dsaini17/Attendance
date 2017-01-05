@@ -15,14 +15,15 @@ import android.widget.EditText;
  */
 public class Dialog extends DialogFragment {
 
-    EditText et1,et2,et3;
+    EditText et1, et2, et3;
 
-    public interface DialogListener{
+    public interface DialogListener {
 
 
         public void Positive_Click(Bundle args);
 
         public void PositiveClick(Bundle args);
+
         public void NegativeClick();
     }
 
@@ -42,7 +43,7 @@ public class Dialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.dialog_activity,null);
+        View view = layoutInflater.inflate(R.layout.dialog_activity, null);
 
         et1 = (EditText) view.findViewById(R.id.subj_code);
         et2 = (EditText) view.findViewById(R.id.subj_name);
@@ -53,7 +54,7 @@ public class Dialog extends DialogFragment {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(dialogListener!=null) {
+                if (dialogListener != null) {
                     Bundle args = new Bundle();
 
                     args.putString("Subject_Code", et1.getText().toString());

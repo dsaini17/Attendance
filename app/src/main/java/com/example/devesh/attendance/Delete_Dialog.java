@@ -21,17 +21,17 @@ public class Delete_Dialog extends DialogFragment {
 
     public static final String TAG = "Delete Dialog";
 
-   /* public interface Dialog_Listener{
-        public void Positive_Click(Bundle args);
-    }
-*/
+    /* public interface Dialog_Listener{
+         public void Positive_Click(Bundle args);
+     }
+ */
     Dialog.DialogListener dialogListener;
 
     @Override
     public void onAttach(Context context) {
 
         super.onAttach(context);
-        dialogListener = (Dialog.DialogListener)context;
+        dialogListener = (Dialog.DialogListener) context;
     }
 
     @NonNull
@@ -41,32 +41,30 @@ public class Delete_Dialog extends DialogFragment {
         final ArrayList<String> back = new ArrayList<>();
 
         final CharSequence[] sub = getArguments().getCharSequenceArray("Subject_Delete");
-        Log.d("Delete dialog","Seq size : "+sub.length);
-
+        Log.d("Delete dialog", "Seq size : " + sub.length);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete Subjects").setMultiChoiceItems(sub,null, new DialogInterface.OnMultiChoiceClickListener(){
+        builder.setTitle("Delete Subjects").setMultiChoiceItems(sub, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                if(b){
-                    Log.d(TAG,i+" "+sub[i]);
+                if (b) {
+                    Log.d(TAG, i + " " + sub[i]);
                     back.add((String) sub[i]);
-                    Log.d(TAG,back.size()+"");
-                }
-                else{
+                    Log.d(TAG, back.size() + "");
+                } else {
                     back.remove(sub[i]);
-                    Log.d(TAG,back.size()+"");
+                    Log.d(TAG, back.size() + "");
                 }
             }
         }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                    if(dialogListener!=null){
-                        Bundle args = new Bundle();
-                        args.putStringArrayList("To_Delete",back);
-                        dialogListener.Positive_Click(args);
-                    }
+                if (dialogListener != null) {
+                    Bundle args = new Bundle();
+                    args.putStringArrayList("To_Delete", back);
+                    dialogListener.Positive_Click(args);
+                }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

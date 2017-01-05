@@ -17,19 +17,18 @@ import android.widget.TextView;
 public class Dialog_Show extends DialogFragment {
 
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        TextView tv1,tv2,tv3;
-        String s1,s2,s3;
+        TextView tv1, tv2, tv3;
+        String s1, s2, s3;
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View convertView = inflater.inflate(R.layout.show,null);
+        View convertView = inflater.inflate(R.layout.show, null);
 
         tv1 = (TextView) convertView.findViewById(R.id.subject_code);
         tv2 = (TextView) convertView.findViewById(R.id.subject_teacher);
@@ -41,7 +40,7 @@ public class Dialog_Show extends DialogFragment {
 
         tv1.setText(s1);
         tv2.setText(s2);
-        if(s3.isEmpty())
+        if (s3.isEmpty())
             tv3.setText("No Record");
         else
             tv3.setText(s3);
@@ -51,7 +50,6 @@ public class Dialog_Show extends DialogFragment {
 
         return builder.create();
     }
-
 
 
 }
