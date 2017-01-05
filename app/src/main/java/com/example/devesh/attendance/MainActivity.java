@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -159,8 +161,29 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         deleteDialog.show(getSupportFragmentManager(),"MNOP");
     }
 
+
+
+    @Override
     public void Positive_Click(Bundle args){
-        
+        ArrayList<String> to_del = new ArrayList<>();
+
+        to_del = args.getStringArrayList("To_Delete");
+
+        Log.d(TAG,"to del size : "+to_del.size());
+
+        myDatabase = Database.getWritable(MainActivity.this);
+
+        int mp = to_del.size();
+      // String[] proj={
+       //         to_del.get(0)
+       // };
+
+        for(int i=0;i<mp;i++){
+            String pr = to_del.get(i);
+
+            myDatabase.delete(DatabaseTable.TABLE_NAME,DatabaseTable.Columns.SUBJECT+"='"+pr+"'",null);
+        }
+        performUpdation();
     }
 
 
@@ -174,6 +197,8 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
         dialog_show.setArguments(args);
         dialog_show.show(getSupportFragmentManager(),"ABC");
     }
+
+
 
     @Override
     public void PositiveClick(Bundle args) {

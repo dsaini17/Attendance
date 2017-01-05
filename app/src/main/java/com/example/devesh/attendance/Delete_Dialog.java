@@ -1,14 +1,15 @@
 package com.example.devesh.attendance;
 
-import android.app.*;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.*;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
@@ -20,17 +21,17 @@ public class Delete_Dialog extends DialogFragment {
 
     public static final String TAG = "Delete Dialog";
 
-    public interface DialogListener{
+   /* public interface Dialog_Listener{
         public void Positive_Click(Bundle args);
     }
-
-    DialogListener dialogListener;
+*/
+    Dialog.DialogListener dialogListener;
 
     @Override
     public void onAttach(Context context) {
 
         super.onAttach(context);
-        dialogListener = (DialogListener) context;
+        dialogListener = (Dialog.DialogListener)context;
     }
 
     @NonNull

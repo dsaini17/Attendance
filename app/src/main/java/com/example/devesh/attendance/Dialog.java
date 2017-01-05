@@ -18,6 +18,10 @@ public class Dialog extends DialogFragment {
     EditText et1,et2,et3;
 
     public interface DialogListener{
+
+
+        public void Positive_Click(Bundle args);
+
         public void PositiveClick(Bundle args);
         public void NegativeClick();
     }
