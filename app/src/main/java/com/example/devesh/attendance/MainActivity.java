@@ -3,6 +3,7 @@ package com.example.devesh.attendance;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
@@ -282,6 +283,17 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
             percent.setText(String.format("%.2f", fm));
 
 
+            if (fm < 75 && fm >= 50)
+                percent.setTextColor(Color.YELLOW);
+            else if (fm < 50) {
+                if (fm == 0 && info.getTotal() == 0)
+                    percent.setTextColor(Color.BLACK);
+                else
+                    percent.setTextColor(Color.RED);
+            } else
+                percent.setTextColor(Color.GREEN);
+
+
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -290,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(DatabaseTable.Columns.ATTENDED, info.getAttended() + 1);
                     contentValues.put(DatabaseTable.Columns.TOTAL, info.getTotal() + 1);
-                    String s = info.getPast() + "1";
+                    String s = info.getPast() + "P ";
                     contentValues.put(DatabaseTable.Columns.PAST, s);
                     myDatabase.update(DatabaseTable.TABLE_NAME, contentValues, DatabaseTable.Columns.ID + "=" + UniqueID, null);
                     performUpdation();
@@ -304,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
                     myDatabase = Database.getWritable(getApplicationContext());
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(DatabaseTable.Columns.TOTAL, info.getTotal() + 1);
-                    String s = info.getPast() + "0";
+                    String s = info.getPast() + "A ";
                     contentValues.put(DatabaseTable.Columns.PAST, s);
                     myDatabase.update(DatabaseTable.TABLE_NAME, contentValues, DatabaseTable.Columns.ID + "=" + UniqueID, null);
                     performUpdation();
@@ -321,14 +333,14 @@ public class MainActivity extends AppCompatActivity implements Dialog.DialogList
                     else {
                         ContentValues contentValues = new ContentValues();
                         String s = info.getPast();
-                        if (s.endsWith("1")) {
+                        if (s.endsWith("P ")) {
                             contentValues.put(DatabaseTable.Columns.ATTENDED, info.getAttended() - 1);
                             contentValues.put(DatabaseTable.Columns.TOTAL, info.getTotal() - 1);
-                            s = s.substring(0, s.length() - 1);
+                            s = s.substring(0, s.length() - 2);
                             contentValues.put(DatabaseTable.Columns.PAST, s);
                         } else {
                             contentValues.put(DatabaseTable.Columns.TOTAL, info.getTotal() - 1);
-                            s = s.substring(0, s.length() - 1);
+                            s = s.substring(0, s.length() - 2);
                             contentValues.put(DatabaseTable.Columns.PAST, s);
                         }
                         myDatabase.update(DatabaseTable.TABLE_NAME, contentValues, DatabaseTable.Columns.ID + "=" + UniqueID, null);
